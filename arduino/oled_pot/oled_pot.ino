@@ -9,12 +9,13 @@ Adafruit_SSD1306 display = Adafruit_SSD1306();
  #error("Height incorrect, please fix Adafruit_SSD1306.h!");
 #endif
 
+// This is where the Potentiometer pin is hooked up.
 #define POT_PIN 5
 
 void setup() {  
   Serial.begin(9600);
 
-  Serial.println("OLED FeatherWing test");
+  Serial.println("OLED FeatherWing init");
   // by default, we'll generate the high voltage from the 3.3v line internally! (neat!)
   display.begin(SSD1306_SWITCHCAPVCC, 0x3C);  // initialize with the I2C addr 0x3C (for the 128x32)
   // init done
@@ -25,23 +26,18 @@ void setup() {
   // internally, this will display the splashscreen.
   display.display();
   delay(1000);
+  
+  Serial.println("Clearing OLED");
 
-  // Clear the buffer.
+  // Clear the OLED display
   display.clearDisplay();
   display.display();
-  
-  Serial.println("IO test");
-
-  // text display tests
   display.setTextSize(3);
   display.setTextColor(WHITE);
-  display.setCursor(0,0);
-  display.println("Pos: ");
-  display.setCursor(0,0);
-  display.display(); // actually display all of the above
 }
 
-int last = 0;
+// Set to -1 so that it displays the first time
+int last = -1;
 void loop() {
   // Divide by 10 puts number between 1-10X
   int pot = analogRead(POT_PIN) / 10;
