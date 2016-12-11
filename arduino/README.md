@@ -39,3 +39,21 @@ Pinout pictures can be found at the link at the top.  Used one strip of 2 for
 power and ground, then a strip of 5 for the i2c bus and buttons.  Could have
 used one more for the rst, but since it was on breadboard I just used the reset
 button on the feather itself.
+
+Load `oled_test`.  You should see something like this on the OLED:
+
+```
+   Hello World!
+ <=> <=> <=> <=>
+```
+
+# Test the OLED display with a Potentiometer
+
+Tutorial:
+https://www.arduino.cc/en/tutorial/potentiometer
+
+Left pin: Ground
+Middle  : Input Pin (A5 in my case)
+Right   : 3.3v
+
+Wire up the potentiometer to pin 5.  Then load `oled_pot`.
