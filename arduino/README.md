@@ -57,3 +57,49 @@ Middle  : Input Pin (A5 in my case)
 Right   : 3.3v
 
 Wire up the potentiometer to pin 5.  Then load `oled_pot`.
+
+# Test Wifi Module
+
+Tutorial is here:
+https://learn.adafruit.com/adafruit-feather-m0-wifi-atwinc1500/using-the-wifi-module
+
+1. Install the wifi101 library
+1. Verify the firmware version (see above).  Make sure you've `WiFi.setPins`.
+1. Follow the other instructions to scan for networks, etc.
+1. In oled_pot_wifi sketch folder create wifi credentials (see below)
+1. Load `oled_pot_wifi`, open the console and see that it has connected to WiFi.
+1. Ping the ip address of your feather.  It will ack.
+1. `curl` the address of your feather and it will respond with the potentiometer
+   reading.
+
+```
+$ ping 192.168.2.142
+PING 192.168.2.142 (192.168.2.142) 56(84) bytes of data.
+64 bytes from 192.168.2.142: icmp_seq=1 ttl=64 time=367 ms
+64 bytes from 192.168.2.142: icmp_seq=2 ttl=64 time=7.51 ms
+64 bytes from 192.168.2.142: icmp_seq=3 ttl=64 time=7.76 ms
+$ curl -v http://192.168.2.142
+* Rebuilt URL to: http://192.168.2.142/
+* Hostname was NOT found in DNS cache
+*   Trying 192.168.2.142...
+* Connected to 192.168.2.142 (192.168.2.142) port 80 (#0)
+> GET / HTTP/1.1
+> User-Agent: curl/7.38.0
+> Host: 192.168.2.142
+> Accept: */*
+>
+< HTTP/1.1 200 OK
+< Content-Type: text/plain
+< Connection: close
+<
+53
+* Closing connection 0
+```
+
+Creating wifi credentials:
+```
+$ cp ./wifi_creds.ino.example ./oled_pot_wifi/wifi_creds.ino
+$ emacs ./oled_pot_wifi/wifi_creds.ino
+# Replace the ssid and pass.  As long as that file is in the same directory
+# as oled_pot_wifi.ino, it'll get picked up at compile time.
+```
