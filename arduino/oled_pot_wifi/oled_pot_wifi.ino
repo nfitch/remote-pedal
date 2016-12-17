@@ -13,7 +13,12 @@ Adafruit_SSD1306 display = Adafruit_SSD1306();
 // This is where the Potentiometer pin is hooked up.
 #define POT_PIN 5
 
-int status = WL_IDLE_STATUS;     // the Wifi radio's status
+// Display Modes
+#define DISP_IP_ADDR_MODE 0
+#define DISP_POT_MODE 1
+
+// WiFi Radio Status
+int status = WL_IDLE_STATUS;
 
 // These will be filled in by the automagic include
 extern char ssid[];
@@ -22,6 +27,14 @@ extern char pass[];
 // Our Server
 WiFiServer server(80);
 IPAddress ipAddr;
+
+// Display Variables
+int disp_mode = DISP_IP_ADDR_MODE;
+int disp_timeout = 0;
+int DISP_TIMEOUT_MILLIS = 5000;
+
+// Last Potentiometer Reading
+int last_pot = -1;
 
 // Functions
 int readPot() {
@@ -50,7 +63,9 @@ void setup() {
   display.clearDisplay();
   display.setTextSize(1);
   display.setTextColor(WHITE);
-  display.print("Initializing...");
+  display.println("Connecting to network");
+  display.print("SSID: ");
+  display.println(ssid);
   display.display();
 
   //Configure pins for Adafruit ATWINC1500 Feather
@@ -87,15 +102,33 @@ void setup() {
 
   // Store off ip address... we don't need to read it each time.
   ipAddr = WiFi.localIP();
-  displayRefresh(readPot(), ipAddr);
+
+  // Display the potentiometer.  It will timeout automatically.
+  displayRefresh(readPot(), ipAddr, DISP_POT_MODE);
 }
 
-
 void loop() {
-  // listen for incoming clients
+  // Display either IP addr or potentiometer
   int pot = readPot();
-  displayRefresh(pot, ipAddr);
+
+  // The "2" is here because reading the pot jitters.
+  if (abs(last_pot - pot) > 2) { // Flip to display pot mode
+    disp_timeout = millis() + DISP_TIMEOUT_MILLIS;
+    disp_mode = DISP_POT_MODE;
+    last_pot = pot;
+  }
+  // Flip back to disp ip addr mode
+  if (disp_timeout != 0 &&
+      (millis() > disp_timeout ||
+       millis() < DISP_TIMEOUT_MILLIS) // Handle millis() overflow hack
+     ) {
+    disp_timeout = 0;
+    disp_mode = DISP_IP_ADDR_MODE;
+  }
+  displayRefresh(pot, ipAddr, disp_mode);
+
   
+  // listen for incoming clients
   WiFiClient client = server.available();
   if (client) {
     Serial.println("new client");
@@ -139,13 +172,21 @@ void loop() {
   yield();
 }
 
-void displayRefresh(int pot, IPAddress ip) {
-    display.clearDisplay();
-    display.setCursor(0,0);
-    display.println(ip);
+void displayRefresh(int pot, IPAddress ip, int mode) {
+  display.clearDisplay();
+  display.setCursor(0,0);
+  if (mode == DISP_POT_MODE) {
+    display.setTextSize(2);
     display.print("Pos: ");
     display.println(pot);
-    display.display();  
+  } else {
+    display.setTextSize(1);
+    display.print("SSID: ");
+    display.println(WiFi.SSID());
+    display.print("IP  : ");
+    display.println(ip);
+  }
+  display.display();
 }
 
 void printWifiData() {

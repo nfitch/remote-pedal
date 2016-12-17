@@ -52,9 +52,9 @@ Load `oled_test`.  You should see something like this on the OLED:
 Tutorial:
 https://www.arduino.cc/en/tutorial/potentiometer
 
-Left pin: Ground
-Middle  : Input Pin (A5 in my case)
-Right   : 3.3v
+* Left pin: Ground
+* Middle  : Input Pin (A5 in my case)
+* Right   : 3.3v
 
 Wire up the potentiometer to pin 5.  Then load `oled_pot`.
 
