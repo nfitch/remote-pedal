@@ -103,3 +103,33 @@ $ emacs ./oled_pot_wifi/wifi_creds.ino
 # Replace the ssid and pass.  As long as that file is in the same directory
 # as oled_pot_wifi.ino, it'll get picked up at compile time.
 ```
+
+# Pedal Test
+
+Get a TRS Jack.  Wire the sleeve to ground.  Wire the tip to GPIO 11 and the
+Ring to GPIO 12.
+
+1. Install Bounce2 Library
+    * http://playground.arduino.cc/Code/Bounce
+    * https://github.com/thomasfredericks/Bounce2/wiki
+1. Open pedal_test/pedal_test.ino
+1. Fix the _BV comilation error (see below)
+1. Open the console after uploading the sketch.
+1. Press the pedal buttons.  See the console output.
+
+## Test Pedal Gotchas
+
+After installing Bounce 2 there were some errors on compile:
+
+```
+state = _BV(DEBOUNCED_STATE) | _BV(UNSTABLE_STATE);
+```
+
+This gave the answer: https://forum.arduino.cc/index.php?topic=266132.30
+
+```
+// Added to ~/Arduino/libraries/Bounce2/Bounce2.cpp
+#ifndef _BV
+#define _BV(x) (1 << (x))
+#endif
+```
