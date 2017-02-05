@@ -133,3 +133,31 @@ This gave the answer: https://forum.arduino.cc/index.php?topic=266132.30
 #define _BV(x) (1 << (x))
 #endif
 ```
+# Websocket Lib Install/Test
+
+Install the Arduino Websocket Server into your libraries directory:
+```
+~/Arduino/libraries$ git clone git@github.com:nfitch/Arduino-Websocket.git
+```
+
+Then:
+1. Open websocket_wifi/websocket_wifi.ino
+1. Upload the sketch and open the console
+1. See the console and OLED display indicate it is connected to wifi
+1. Take note of the IP address of the microcontroller
+1. Open http://www.websocket.org/echo.html in a browser
+1. Point "Location:" at ```ws://<ip address>```
+1. Hit the "Connect" button
+
+See on the Serial Console, once per second:
+```
+Sending data: hello world!
+```
+
+See on the Echo Test webpage, once per second:
+```
+RECEIVED: hello world!
+```
+
+You can also have the Echo Test webpage send a message and see it printed on the
+Serial Console.
