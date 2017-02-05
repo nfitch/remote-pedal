@@ -112,7 +112,10 @@ void loop() {
        Serial.print("Got data: ");
        Serial.println(data);
     }
-    webSocketServer.sendData("hello world!");
+    data = "hello world!";
+    webSocketServer.sendData(data);
+    Serial.print("Sent data: ");
+    Serial.println(data);
     clientConnected = true;
   } else {
     // The WebSocketServer is going to hold onto the client so we don't need to.

@@ -151,7 +151,7 @@ Then:
 
 See on the Serial Console, once per second:
 ```
-Sending data: hello world!
+Sent data: hello world!
 ```
 
 See on the Echo Test webpage, once per second:
