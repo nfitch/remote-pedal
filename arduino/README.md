@@ -161,3 +161,42 @@ RECEIVED: hello world!
 
 You can also have the Echo Test webpage send a message and see it printed on the
 Serial Console.
+
+# Install Remote Pedal
+
+If you've been following along with all the above you should already have the
+pedal parts assembled.  At that point you can test the remote pedal by:
+
+1. Open the remote_pedal/remote_pedal.ino
+1. Upload the sketch and open the console
+1. See the console and OLED display indicate it is connected to wifi
+1. Take note of the IP address of the microcontroller
+1. Open http://www.websocket.org/echo.html in a browser
+1. Point "Location:" at ```ws://<ip address>```
+1. Hit the "Connect" button
+1. Press the buttons on the pedal
+
+See on the serial console:
+```
+Handshake Successful
+Button pressed: right
+Sent data: {"v":0,"b":"right","d":4,"p":14}
+Button pressed: middle
+Sent data: {"v":0,"b":"middle","d":2,"p":14}
+Button pressed: left
+Sent data: {"v":0,"b":"left","d":0,"p":15}
+```
+
+See on the Echo Test webpage:
+```
+CONNECTED
+RECEIVED: {"v":0,"b":"right","d":4,"p":14}
+RECEIVED: {"v":0,"b":"middle","d":2,"p":14}
+RECEIVED: {"v":0,"b":"left","d":0,"p":15}
+```
+
+Note:
+1. ```v```: Version is 0
+1. ```b```: Button (right, left, middle)
+1. ```d```: Duration the button was held, in seconds
+1. ```p```: Potentiometer reading
