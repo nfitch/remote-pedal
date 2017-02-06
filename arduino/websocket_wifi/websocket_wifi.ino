@@ -27,6 +27,8 @@ extern char pass[];
 // Our Server
 // Create a Websocket server
 WiFiServer server(80);
+// We only allow one client
+WiFiClient client;
 WebSocketServer webSocketServer;
 IPAddress ipAddr;
 
@@ -101,7 +103,6 @@ void setup() {
   displayRefresh(ipAddr, false);
 }
 
-WiFiClient client;
 void loop() {
 
   bool clientConnected = false;
@@ -118,7 +119,6 @@ void loop() {
     Serial.println(data);
     clientConnected = true;
   } else {
-    // The WebSocketServer is going to hold onto the client so we don't need to.
     client = server.available();
     if (client.connected() && webSocketServer.handshake(client)) {
       Serial.println("Handshake Successful");
