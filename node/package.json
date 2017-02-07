@@ -1,0 +1,13 @@
+{
+    "name": "remote-pedal-mock",
+    "description": "Remote Pedal Mock Server",
+    "version": "0.0.1",
+    "author": "Nate Fitch",
+    "main": "./lib/index.js",
+    "dependencies": {
+        "ws": "2.0.2"
+    },
+    "scripts": {
+        "start": "node ./server.js"
+    }
+}
