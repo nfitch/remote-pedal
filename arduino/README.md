@@ -141,6 +141,7 @@ Install the Arduino Websocket Server into your libraries directory:
 ```
 
 Then:
+
 1. Open websocket_wifi/websocket_wifi.ino
 1. Upload the sketch and open the console
 1. See the console and OLED display indicate it is connected to wifi
