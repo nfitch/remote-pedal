@@ -4,13 +4,16 @@ var WebSocketServer = require('ws').Server;
 var server = require('http').createServer();
 var repl = require('repl');
 
+var prompt = '> '
 var wss = new WebSocketServer({server: server});
 var conns = [];
+
 wss.on('connection', function (ws) {
+    console.log('\nclient connected');
     conns.push(ws);
     ws.on('close', function () {
         conns.splice(conns.indexOf(ws), 1);
-        console.log('client disconnected');
+        console.log('\nclient disconnected');
     });
 });
 
@@ -72,7 +75,7 @@ function ev(cmd, context, filename, cb) {
     return (cb(null, parts[0]));
 }
 
-server.listen(8080, function () {
-    console.log('Listening on http://localhost:8080');
-    repl.start({prompt: '> ', eval: ev});
+server.listen(8090, function () {
+    console.log('Listening on http://localhost:8090');
+    repl.start({prompt: prompt, eval: ev});
 });
